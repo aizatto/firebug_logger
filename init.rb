@@ -1,0 +1,1 @@
+require 'firebug_logger'

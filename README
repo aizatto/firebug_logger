@@ -1,0 +1,68 @@
+= FirebugLogger
+
+FirebugLogger provides a convenient way to output logs to the JavaScript console.
+
+FirebugLogger is to be used with Firebug ( http://www.getfirebug.com ), a Mozilla Firefox extension.
+If you are not using Mozilla Firefox, you can opt to use Firebug Lite ( http://www.getfirebug.com/lite.html ).
+
+== Installation
+Installation is very simple
+
+ ./script/plugin install http://svn.aizatto.com/firebug_logger/trunk/
+
+== Using FirebugLogger
+A new object, +firebug+, is exposed inside your Controllers.  Logs are sent to this 
+object via several methods. 
+
+  class UserController < ApplicationController
+    def index
+      firebug.log 'This seems like a good thing to do'
+      firebug.debug 'Why I can be easily debugging with this thing!'
+      firebug.info "Oh this looks like its very informative, doncha think?"
+      firebug.warn 'Danger Will Robinson, Danger!'
+      firebug.error "Oh noes I'm going to explode!"
+    end
+  end
+
+Inside your Views you have to output the logs.  So that Firebug can display them.
+  <%= firebug_logs %>
+
+== Configuring FirebugLogger
+Changes to FirebugLogger can be placed inside your <tt>environment.rb</tt>
+
+=== Restrict Output By Environment
+By default the logs will appear in the +development+ environment, ensuring that when in +production+
+your logs do not appear.  But if you do want them to (for whatever odd reason) you can enable 
+other environments like so.
+  FirebugLogger::Base.allowed_environments = %w[development test production]
+
+=== Restrict Output By Log level
+Any submitted logs below the default log level will not be logged.
+
+To change the default log level:
+  FirebugLogger::Base.default_severity = FirebugLogger::Base::FATAL
+
+The default log level is +DEBUG+.  See the section on severity about the various log levels.
+
+== Severity
+Severity is based on the default <tt>Logger::Severity</tt>, with the exception of +FATAL+.
+Firebug does not include a +FATAL+ log.  In the case of a fatal log, it is mapped
+to the +ERROR+ severity.
+
+Possible Severities:
+* +DEBUG+ -- 0
+* +INFO+ -- 1
+* +WARN+ -- 2
+* +ERROR+ -- 3
+* +FATAL+ -- 4
+* +UNKNOWN+ -- 5
+
+== License
+
+FirebugLogger is released under the MIT license.
+
+==  Authors
+
+FirebugLogger is developed by Ezwan Aizat Bin Abdullah Faiz <mailto:aizat.faiz@gmail.com> http://aizatto.com .
+
+The FirebugLogger website can be found at http://rails.aizatto.com/category/firebug-logger
